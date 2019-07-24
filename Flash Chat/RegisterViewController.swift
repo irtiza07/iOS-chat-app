@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 class RegisterViewController: UIViewController {
@@ -28,11 +29,22 @@ class RegisterViewController: UIViewController {
 
   
     @IBAction func registerPressed(_ sender: AnyObject) {
-        
-
-        
+        print("Registration handler")
         //TODO: Set up a new user on our Firbase database
-        
+        Auth.auth().createUser(withEmail: emailTextfield.text!, password: passwordTextfield.text!) { (user, error) in
+            if error != nil {
+                print(error!)
+                let alert = UIAlertController(title: "Registration Failed", message: "Please input correct email and password", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true)
+                self.emailTextfield.text = ""
+                self.passwordTextfield.text = ""
+                
+            } else {
+                print("Registration successfull")
+                self.performSegue(withIdentifier: "goToChat", sender: self)
+            }
+        }
         
 
         
